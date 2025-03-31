@@ -1,0 +1,389 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Header Styles */
+header {
+    background-color: #2b8d5e;
+    padding: 20px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header .logo h1 {
+    font-size: 2.5em;
+    color: white;
+}
+
+header nav ul {
+    list-style-type: none;
+    display: flex;
+}
+
+header nav ul li {
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: white;
+    font-size: 1.1em;
+    transition: color 0.3s;
+}
+
+header nav ul li a:hover {
+    color: #f8c62e;
+}
+
+/* Hero Section */
+/* Hero Section */
+.hero {
+    background-image: url('https://www.goodnet.org/photos/620x0/35909_hd.jpg'); /* Your background image */
+    background-size: cover;
+    background-position: center;
+    color: rgb(111, 165, 187);
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    padding: 0 20px;
+    animation: backgroundMove 15s linear infinite; /* Adding background movement */
+}
+
+/* Animation for the background to create a moving effect */
+@keyframes backgroundMove {
+    0% {
+        background-position: center top;
+    }
+    50% {
+        background-position: center bottom;
+    }
+    100% {
+        background-position: center top;
+    }
+}
+
+/* Hero Content Animation */
+.hero-content {
+    max-width: 800px;
+    animation: fadeInUp 2s ease-out; /* Slide-up and fade-in effect */
+}
+
+.hero h2 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    animation: fadeInUp 2s ease-out; /* Adding fadeInUp effect */
+}
+
+.hero p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    animation: fadeInUp 2s ease-out 0.5s; /* Fade-in with a slight delay */
+}
+
+.cta-btn {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    background-color: #f8c62e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    animation: buttonScale 0.5s ease-out 1s forwards; /* Button scale animation */
+}
+
+.cta-btn:hover {
+    background-color: #60b347;
+}
+
+/* Button Scale Animation */
+@keyframes buttonScale {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Animations for fadeInUp (Text Slide and Fade-in) */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.hero-content {
+    max-width: 800px;
+}
+
+.hero h2 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    animation: fadeIn 2s ease-out;
+}
+
+.hero p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    animation: fadeIn 2s ease-out;
+}
+
+.cta-btn {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    background-color: #f8c62e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cta-btn:hover {
+    background-color: #60b347;
+}
+
+/* About Section */
+.about {
+    padding: 50px 20px;
+    background-color: #fff;
+    text-align: center;
+    animation: fadeIn 2s ease-out;
+}
+
+.about h2 {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+}
+
+.about p {
+    font-size: 1.2em;
+    color: #666;
+}
+
+/* Services Section */
+.services {
+    display: flex;
+    justify-content: space-around;
+    padding: 50px 20px;
+    background-color: #f4f4f4;
+    flex-wrap: wrap;
+}
+
+.service-box {
+    background-color: white;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 30%;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.service-box:hover {
+    transform: translateY(-10px);
+    background-color:aqua;
+}
+
+.service-box h3 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+
+.service-box p {
+    font-size: 1.1em;
+    color: #666;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #60b347;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+footer p {
+    margin: 5px 0;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header .logo h1 {
+        font-size: 2em;
+    }
+
+    header nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    header nav ul li {
+        margin: 10px 0;
+    }
+
+    .hero h2 {
+        font-size: 2.5em;
+    }
+
+    .hero p {
+        font-size: 1.1em;
+    }
+
+    .services {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .service-box {
+        width: 80%;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h2 {
+        font-size: 2em;
+    }
+
+    .cta-btn {
+        font-size: 1em;
+        padding: 8px 15px;
+    }
+
+    .about h2 {
+        font-size: 2em;
+    }
+
+    .services {
+        padding: 20px;
+    }
+
+    .service-box {
+        width: 90%;
+    }
+}
+
+/*annimarion for carts */
+
+/* Container and layout */
+.container {
+    margin-top: 20px;
+    padding: 0 15px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Card Styles */
+.card {
+    width: 18rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.card-img-top {
+    border-bottom: 3px solid #ddd;
+    transition: transform 0.3s ease;
+}
+
+/* Card Hover Animation */
+.card:hover {
+    transform: translateY(-10px); /* Card lifts when hovered */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase shadow for depth */
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.05); /* Slight zoom on image */
+}
+
+/* Card Body */
+.card-body {
+    padding: 15px;
+    background-color: #fff;
+   
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+/* Card Text Hover Effect */
+.card:hover .card-title {
+    color: #ff6f61; /* Change color on hover */
+}
+
+/* Button Styles */
+.btn {
+    background-color: #ff6f61;
+    color: #fff;
+    border-radius: 5px;
+    text-transform: uppercase;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
+    border: none;
+}
+
+.btn:hover {
+    background-color: #ff4e3a; /* Darker red on hover */
+}
+
+/* Media Queries for Responsiveness */
+@media screen and (max-width: 768px) {
+    .col {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .card {
+        width: 100%;
+    }
+}
