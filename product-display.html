@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer's Product Display</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f9fb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+
+        h2 {
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #2d3e50;
+            text-align: center;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .category-section {
+            width: 80%;
+            margin-bottom: 40px;
+        }
+
+        .category-title {
+            font-size: 28px;
+            color: #fff;
+            background-color: #4CAF50;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .product-card {
+            background-color: #fff;
+            width: 280px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .product-card img {
+            width: 100%;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .product-card .product-info {
+            padding: 20px;
+        }
+
+        .product-card .product-info h4 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .product-card .product-info p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .product-card .product-info .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #76e043;
+        }
+
+        .remove-btn {
+            background-color: #FF6F61;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .remove-btn:hover {
+            background-color: #e04e43;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Farmer's Products Display</h2>
+
+    <!-- Vegetable Section -->
+    <div id="vegetable-section" class="category-section">
+        <div class="category-title">Vegetable</div>
+        <div class="product-container" id="vegetable-products">
+            <!-- Products will be displayed here dynamically -->
+        </div>
+    </div>
+
+    <!-- Milk Section -->
+    <div id="milk-section" class="category-section">
+        <div class="category-title">Milk</div>
+        <div class="product-container" id="milk-products">
+            <!-- Products will be displayed here dynamically -->
+        </div>
+    </div>
+
+    <!-- Grain Section -->
+    <div id="grain-section" class="category-section">
+        <div class="category-title">Grain</div>
+        <div class="product-container" id="grain-products">
+            <!-- Products will be displayed here dynamically -->
+        </div>
+    </div>
+
+    <script>
+        // Retrieve cart data from localStorage
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Function to create product cards
+        function createProductCard(product, index) {
+            return `
+                <div class="product-card" data-index="${index}">
+                    <img src="${product.productImageUrl}" alt="${product.productCategory}">
+                    <div class="product-info">
+                        <h4>${product.productCategory}</h4>
+                        <p>${product.productDescription}</p>
+                        <p><strong>Farmer's Contact:</strong> ${product.farmerMobile}</p>
+                        <div class="price">$${product.productPrice}</div>
+                        <button class="remove-btn" onclick="removeProduct(${index})">Remove</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Function to display products under respective categories
+        function displayProducts() {
+            let vegetableProducts = '';
+            let milkProducts = '';
+            let grainProducts = '';
+
+            cart.forEach((product, index) => {
+                if (product.productCategory === 'Vegetable') {
+                    vegetableProducts += createProductCard(product, index);
+                } else if (product.productCategory === 'Milk') {
+                    milkProducts += createProductCard(product, index);
+                } else if (product.productCategory === 'Grain') {
+                    grainProducts += createProductCard(product, index);
+                }
+            });
+
+            // Insert the product cards into their respective sections
+            document.getElementById('vegetable-products').innerHTML = vegetableProducts;
+            document.getElementById('milk-products').innerHTML = milkProducts;
+            document.getElementById('grain-products').innerHTML = grainProducts;
+        }
+
+        // Function to remove a product from the cart
+        function removeProduct(index) {
+            // Remove the product from the cart array
+            cart.splice(index, 1);
+
+            // Update localStorage with the new cart
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // Re-display the products after removal
+            displayProducts();
+        }
+
+        // Call the function to display products on page load
+        window.onload = displayProducts;
+    </script>
+
+</body>
+</html>
