@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Farmer's Section</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: #f4f4f9;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+    }
+
+    .section {
+      width: 100%;
+      max-width: 100%;
+      padding: 20px;
+      margin-bottom: 20px;
+      background: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 32px;
+      color: #333;
+    }
+
+    .upload-item input,
+    .upload-item textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .upload-item input[type="file"] {
+      padding: 10px;
+    }
+
+    .upload-item button,
+    .view-items button,
+    .remove-item button {
+      width: 100%;
+      padding: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      text-align: center;
+    }
+
+    .upload-item button:hover,
+    .view-items button:hover,
+    .remove-item button:hover {
+      background-color: #45a049;
+    }
+
+    .view-items, .remove-item {
+      text-align: center;
+    }
+
+    .item-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .item {
+      background-color: #fafafa;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 30%;
+      text-align: center;
+      position: relative;
+    }
+
+    .item img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .item button {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .item button:hover {
+      background-color: #e41b00;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .item {
+        width: 48%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .item {
+        width: 100%;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Farmer's Section</h1>
+
+  <!-- Upload Item Section -->
+  <div class="section upload-item">
+    <h2>Upload Your Item</h2>
+    <form id="uploadForm" onsubmit="return uploadItem(event)">
+      <input type="file" id="itemImage" accept="image/*" required />
+      <textarea id="itemDescription" rows="4" placeholder="Describe your item..." required></textarea>
+      <button type="submit">Upload Item</button>
+    </form>
+  </div>
+
+  <!-- View Uploaded Items Section -->
+  <div class="section view-items">
+    <h2>Uploaded Items</h2>
+    <div class="item-list" id="itemList">
+      <!-- Uploaded items will appear here -->
+    </div>
+    <button onclick="viewUploadedItems()">View Uploaded Items</button>
+  </div>
+
+  <!-- Remove Item Section -->
+  <div class="section remove-item">
+    <h2>Remove Item</h2>
+    <button onclick="removeItem()">Remove an Item</button>
+  </div>
+
+  <script>
+    let items = []; // Store the items
+
+    // Function to handle item upload
+    function uploadItem(event) {
+      event.preventDefault();
+
+      const itemImage = document.getElementById("itemImage").files[0];
+      const itemDescription = document.getElementById("itemDescription").value;
+
+      if (!itemImage || !itemDescription) return;
+
+      // Create an object for the item
+      const item = {
+        id: new Date().getTime(),
+        image: URL.createObjectURL(itemImage),
+        description: itemDescription,
+      };
+
+      // Add item to the list
+      items.push(item);
+      displayItems();
+
+      // Clear the form
+      document.getElementById("uploadForm").reset();
+    }
+
+    // Function to display uploaded items
+    function displayItems() {
+      const itemList = document.getElementById("itemList");
+      itemList.innerHTML = ''; // Clear the list
+
+      items.forEach(item => {
+        const itemElement = document.createElement("div");
+        itemElement.classList.add("item");
+        itemElement.setAttribute("data-id", item.id);
+
+        itemElement.innerHTML = `
+          <img src="${item.image}" alt="Item Image" />
+          <p>${item.description}</p>
+          <button onclick="removeItem(${item.id})">Remove</button>
+        `;
+
+        itemList.appendChild(itemElement);
+      });
+    }
+
+    // Function to view uploaded items
+    function viewUploadedItems() {
+      const itemList = document.getElementById("itemList");
+      itemList.classList.toggle("hidden");
+    }
+
+    // Function to remove an item
+    function removeItem(id) {
+      items = items.filter(item => item.id !== id);
+      displayItems();
+    }
+  </script>
+
+</body>
+</html>
