@@ -16,29 +16,39 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f8ff;
+            background-color: #f4f4f9; /* Neutral background color */
+            background-image: url('https://as2.ftcdn.net/v2/jpg/09/11/74/35/1000_F_911743551_4ZBtHGuUTajZccqjA1Qfd04Wgb0e1YxZ.jpg');
+            background-size: cover; /* Ensures the image covers the entire viewport */
+            background-position: center; /* Centers the background image */
+            background-repeat: no-repeat; /* Prevents the image from repeating */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            color: #333;
         }
 
         .container {
-            background-color: #fff;
+            background-color: transparent; /* Make container background fully transparent */
             border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             padding: 40px;
-            width: 450px;
+            width: 100%;
+            max-width: 450px;
             animation: fadeIn 1.5s ease-out;
+            backdrop-filter: blur(10px); /* Apply blur effect */
+            -webkit-backdrop-filter: blur(10px); /* For Safari */
+            transition: backdrop-filter 0.3s ease-in-out;
         }
 
         h2 {
             text-align: center;
             font-size: 28px;
-            color: #2d3e50;
+            color: #333;
             margin-bottom: 30px;
             animation: slideInFromTop 1.5s ease-out;
+            font-weight: 600;
         }
 
         .input-group {
@@ -156,6 +166,34 @@
             font-size: 14px;
             margin-top: 10px;
         }
+
+        /* Hover and animation on file input */
+        input[type="file"] {
+            border: 2px solid #76e043;
+            padding: 12px 14px;
+            cursor: pointer;
+        }
+
+        input[type="file"]:hover {
+            background-color: #f0f8ff;
+        }
+
+        /* Styling the tooltips */
+        .tooltip-inner {
+            background-color: #76e043;
+        }
+
+        .tooltip-arrow {
+            border-top-color: #76e043;
+        }
+
+        /* Responsive design adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                width: 90%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -165,7 +203,7 @@
             <!-- Category Selection Dropdown -->
             <div class="input-group">
                 <label for="productCategory">Product Category</label>
-                <select id="productCategory" name="productCategory" required>
+                <select id="productCategory" name="productCategory" required data-bs-toggle="tooltip" data-bs-placement="top" title="Select a category for your product.">
                     <option value="" disabled selected>Select Category</option>
                     <option value="Vegetable">Vegetable</option>
                     <option value="Milk">Milk</option>
@@ -176,25 +214,29 @@
             <!-- Product Image Section -->
             <div class="input-group">
                 <label for="productImage">Product Image</label>
-                <input type="file" id="productImage" name="productImage" accept="image/*" required>
+                <input type="file" id="productImage" name="productImage" accept="image/*" required data-bs-toggle="tooltip" data-bs-placement="top" title="Upload an image of your product.">
+                <div id="imageError" class="error"></div>
             </div>
 
             <!-- Product Description Section -->
             <div class="input-group">
                 <label for="productDescription">Product Description</label>
-                <textarea id="productDescription" name="productDescription" placeholder="Describe your product here..." required></textarea>
+                <textarea id="productDescription" name="productDescription" placeholder="Describe your product here..." required data-bs-toggle="tooltip" data-bs-placement="top" title="Provide a detailed description of your product. Minimum 10 characters."></textarea>
+                <div id="descriptionError" class="error"></div>
             </div>
 
             <!-- Farmer's Mobile Section -->
             <div class="input-group">
                 <label for="farmerMobile">Farmer's Mobile Number</label>
-                <input type="text" id="farmerMobile" name="farmerMobile" placeholder="Enter your mobile number" required>
+                <input type="text" id="farmerMobile" name="farmerMobile" placeholder="Enter your mobile number" required data-bs-toggle="tooltip" data-bs-placement="top" title="Enter a 10-digit mobile number for contact.">
+                <div id="mobileError" class="error"></div>
             </div>
 
             <!-- Product Price Section -->
             <div class="input-group">
-                <label for="productPrice">Product Price (in USD)</label>
-                <input type="number" id="productPrice" name="productPrice" placeholder="Enter the price" required>
+                <label for="productPrice">Product Price (in INR)</label>
+                <input type="number" id="productPrice" name="productPrice" placeholder="Enter the price in INR" required data-bs-toggle="tooltip" data-bs-placement="top" title="Enter the price of the product in INR.">
+                <div id="priceError" class="error"></div>
             </div>
 
             <button type="submit">Submit Product</button>
@@ -202,9 +244,21 @@
     </div>
 
     <script>
+        // Enable Bootstrap tooltips
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
         document.getElementById('productForm').addEventListener('submit', function(event) {
             event.preventDefault();
     
+            // Clear previous error messages
+            document.getElementById('imageError').textContent = '';
+            document.getElementById('descriptionError').textContent = '';
+            document.getElementById('mobileError').textContent = '';
+            document.getElementById('priceError').textContent = '';
+
             // Get form data
             const productCategory = document.getElementById('productCategory').value;
             const productImage = document.getElementById('productImage').files[0];
@@ -212,45 +266,67 @@
             const farmerMobile = document.getElementById('farmerMobile').value;
             const productPrice = document.getElementById('productPrice').value;
     
+            let formIsValid = true;
+
             // Validate if image is selected
             if (!productImage) {
-                alert("Please upload a product image.");
-                return;
+                document.getElementById('imageError').textContent = 'Please upload a product image.';
+                formIsValid = false;
             }
     
             // Validate if category is selected
             if (!productCategory) {
                 alert("Please select a product category.");
-                return;
+                formIsValid = false;
+            }
+
+            // Validate product description
+            if (!productDescription || productDescription.trim().length < 10) {
+                document.getElementById('descriptionError').textContent = 'Product description must be at least 10 characters long.';
+                formIsValid = false;
             }
     
-            // Create a new FormData object for the image and other fields
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const productImageUrl = e.target.result;
+            // Validate mobile number format (basic validation)
+            const mobilePattern = /^[0-9]{10}$/;
+            if (!farmerMobile || !mobilePattern.test(farmerMobile)) {
+                document.getElementById('mobileError').textContent = 'Please enter a valid 10-digit mobile number.';
+                formIsValid = false;
+            }
     
-                // Retrieve the existing cart data from localStorage (or create a new array if no cart exists)
-                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            // Validate price (must be a positive number)
+            if (!productPrice || productPrice <= 0) {
+                document.getElementById('priceError').textContent = 'Please enter a valid product price.';
+                formIsValid = false;
+            }
     
-                // Add the new product to the cart
-                cart.push({
-                    productCategory,
-                    productImageUrl,
-                    productDescription,
-                    farmerMobile,
-                    productPrice
-                });
+            if (formIsValid) {
+                // Create a new FormData object for the image and other fields
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const productImageUrl = e.target.result;
     
-                // Store the updated cart in localStorage
-                localStorage.setItem('cart', JSON.stringify(cart));
+                    // Retrieve the existing cart data from localStorage (or create a new array if no cart exists)
+                    let cart = JSON.parse(localStorage.getItem('cart')) || [];
     
-                // Redirect to the product display page
-                window.location.href = 'product-display.html';
-            };
+                    // Add the new product to the cart
+                    cart.push({
+                        productCategory,
+                        productImageUrl,
+                        productDescription,
+                        farmerMobile,
+                        productPrice
+                    });
     
-            reader.readAsDataURL(productImage);
+                    // Store the updated cart in localStorage
+                    localStorage.setItem('cart', JSON.stringify(cart));
+    
+                    // Redirect to the product display page
+                    window.location.href = 'product-display.html';
+                };
+    
+                reader.readAsDataURL(productImage);
+            }
         });
     </script>
-    
 </body>
 </html>
